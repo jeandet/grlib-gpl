@@ -1,6 +1,10 @@
 #include "leon3.h"
 #include "testmod.h" 
-#include "mmu.h" 
+#include "mmu.h"
+
+#ifndef RAMSTART
+#define RAMSTART 0x40000000
+#endif	
  
 	.seg	"text"
 	.proc	0
@@ -83,6 +87,30 @@ mmu_double:
 _srmmu_fault_svt:
 	rd      %wim, %l3
 _srmmu_fault:
+	//check if we are coming from mmu_so_check
+	//fault address must be 0x400F0000
+	mov	0x400, %l5
+	lda	[%l5] ASI_M_MMUREGS, %l6
+        sethi   %hi(RAMSTART+0xF0000),%l7
+	or      %l7, %lo(RAMSTART+0xF0000), %l5
+	subcc   %l6,%l5,%g0
+	bne     mmu_fault_t0
+	nop
+	//come from mmu_so_check
+	//set PS and S to '1' in order execution to continue
+	rd	%psr,%l5
+	or	0xC0, %l5, %l5
+	wr	%l5,%psr
+	//indicate that we have arrived to this function
+	//if "check" address is changed in mmu_so_check.c
+	//the address of %l5 must also be modified
+	mov     0x123,%l3
+	sta	%l3,[%l6] 0x1C
+	add     %l1,0x4,%l1
+	add     %l2,0x4,%l2
+	ba	mmu_fault_end
+
+mmu_fault_t0:	
 	mov	0x400, %l5
 	mov	0x300, %l4
 	lda	[%l5] ASI_M_MMUREGS, %l6	! read sfar first
@@ -100,7 +128,8 @@ _srmmu_fault:
 	inc   12,%l7
 	set	pth_addr,%l5
 	st    %l7,[%l5]
-	  
+	
+mmu_fault_end:	
 	jmp	%l1				! reexecute command
 	rett	%l2
 

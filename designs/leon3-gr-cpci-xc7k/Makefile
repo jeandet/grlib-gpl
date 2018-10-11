@@ -38,7 +38,7 @@ endif
 
 # - MIG -
 ifeq ($(CONFIG_MIG_7SERIES),y)
-VSIMOPT+= -t fs -novopt
+VSIMOPT+= -t fs -voptargs="+acc" 
 VSIMOPT+= -L secureip -L unisims_ver -L unisim glbl
 ifndef CONFIG_MIG_7SERIES_MODEL
 VSIMOPT+= -gUSE_MIG_INTERFACE_MODEL=false
@@ -53,7 +53,7 @@ endif
 ifeq ("$(GRLIB_SIMULATOR)","ALDEC")
 VSIMOPT+= +access +w -voptargs="+acc" +notimingchecks
 else
-VSIMOPT+=-novopt +notimingchecks
+VSIMOPT+=-voptargs="+acc" +notimingchecks
 endif
 
 # Run simulation in batch mode
@@ -96,18 +96,3 @@ include $(GRLIB)/software/leon3/Makefile
 
 ##################  project specific targets ##########################
 
-
-copy_mig:
-	if !(test -d "./vivado"); then\
-	  mkdir vivado;\
-	fi; \
-	cp ../../boards/gr-cpci-xc7k-xc7k325t/mig_a.prj ./vivado/mig_a.prj;\
-
-sim_cpci_xc7k: copy_mig 
-	make sim
-
-vivado_cpci_xc7k: copy_mig 
-	make vivado
-
-vivado-launch_cpci_xc7k: copy_mig 
-	make vivado-launch

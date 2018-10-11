@@ -20,6 +20,11 @@ leon3_test(int domp, volatile int *irqmp, int mtest)
 	grfpu_test();
         cachetest();
 	mmu_test();
+	/* Removed test due to problem with MALLOC() */
+	if (((rsysreg(8) >> 2) & 1) == 1){
+	  /*supervisor only bit exists*/
+	  mmu_so_check();
+	}
 	rextest();
         awptest();
 }

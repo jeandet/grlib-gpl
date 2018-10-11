@@ -260,9 +260,9 @@ TECHLIBS = xilinxcorelib_ver secureip_ver unisims_ver secureip unisim
 VLOGOPT= -O0
 VCOMOPT= -explicit -O0 
 ifeq ("$(GRLIB_SIMULATOR)","ALDEC")
-VSIMOPT= +access +w -t ps -novopt +notimingchecks -L secureip_ver -L xilinxcorelib_ver -L unisims_ver -L work -GSIM_BYPASS_INIT_CAL=FAST glbl -do $(GRLIB)/bin/runvsim.do $(SIMTOP)
+VSIMOPT= +access +w -t ps -voptargs="+acc" +notimingchecks -L secureip_ver -L xilinxcorelib_ver -L unisims_ver -L work -GSIM_BYPASS_INIT_CAL=FAST glbl -do $(GRLIB)/bin/runvsim.do $(SIMTOP)
 else
-VSIMOPT= -t ps -novopt +notimingchecks -L secureip -L secureip_ver -L xilinxcorelib_ver -L unisims_ver -L work -GSIM_BYPASS_INIT_CAL=FAST glbl -do $(GRLIB)/bin/runvsim.do $(SIMTOP)
+VSIMOPT= -t ps -voptargs="+acc" +notimingchecks -L secureip -L secureip_ver -L xilinxcorelib_ver -L unisims_ver -L work -GSIM_BYPASS_INIT_CAL=FAST glbl -do $(GRLIB)/bin/runvsim.do $(SIMTOP)
 endif
 
 LIBSKIP = core1553bbc core1553brm core1553brt gr1553 corePCIF \
@@ -270,11 +270,11 @@ LIBSKIP = core1553bbc core1553brm core1553brt gr1553 corePCIF \
 	spansion
 DIRSKIP = b1553 pci/pcif leon2 leon2ft crypto satcan ambatest can \
 	usb grusbhc spacewire ascs slink spi hcan \
-	l2cache pwm gr1553b iommu ac97
+	l2cache pwm gr1553b iommu ac97 ge_1000baseX
 ifeq ("$(CONFIG_LEON4)","")
 DIRSKIP+=leon4v0
 endif
-FILESKIP = grcan.vhd ddr2.v mobile_ddr.v
+FILESKIP = grcan.vhd ddr2.v mobile_ddr.v adapters/sgmii.vhd
 
 include $(GRLIB)/bin/Makefile
 include $(GRLIB)/software/leon3/Makefile

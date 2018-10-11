@@ -2,7 +2,7 @@
 --  This file is a part of the GRLIB VHDL IP LIBRARY
 --  Copyright (C) 2003 - 2008, Gaisler Research
 --  Copyright (C) 2008 - 2014, Aeroflex Gaisler
---  Copyright (C) 2015 - 2017, Cobham Gaisler
+--  Copyright (C) 2015 - 2018, Cobham Gaisler
 --
 --  This program is free software; you can redistribute it and/or modify
 --  it under the terms of the GNU General Public License as published by
@@ -69,6 +69,9 @@ begin
     end generate;
     cmos_15 : if voltage = x15v generate
       ip : IBUF generic map (IOSTANDARD => "LVCMOS15") port map (O => o, I => pad);
+    end generate;
+    cmos_12 : if voltage = x12v generate
+      ip : IBUF generic map (IOSTANDARD => "LVCMOS12") port map (O => o, I => pad);
     end generate;
   end generate;
   sstl2x : if level = sstl2_i generate
@@ -165,6 +168,16 @@ begin
       end generate;
       fast0 : if slew /= 0 generate
         op : IOBUF generic map (drive => strength, IOSTANDARD => "LVCMOS15", SLEW => "FAST")
+          port map (O => o, IO => pad, I => i, T => en);
+      end generate;
+    end generate;
+    cmos_12 : if voltage = x12v generate
+      slow0 : if slew = 0 generate
+        op : IOBUF generic map (drive => strength, IOSTANDARD => "LVCMOS12")
+          port map (O => o, IO => pad, I => i, T => en);
+      end generate;
+      fast0 : if slew /= 0 generate
+        op : IOBUF generic map (drive => strength, IOSTANDARD => "LVCMOS12", SLEW => "FAST")
           port map (O => o, IO => pad, I => i, T => en);
       end generate;
     end generate;
@@ -273,6 +286,16 @@ begin
       end generate;
       fast0 : if slew /= 0 generate
         op : OBUF generic map (drive => strength, IOSTANDARD => "LVCMOS15", SLEW => "FAST")
+          port map (O => pad, I => i);
+      end generate;
+    end generate;
+    cmos_12: if voltage = x12v generate
+      slow0 : if slew = 0 generate
+        op : OBUF generic map (drive => strength, IOSTANDARD => "LVCMOS12")
+          port map (O => pad, I => i);
+      end generate;
+      fast0 : if slew /= 0 generate
+        op : OBUF generic map (drive => strength, IOSTANDARD => "LVCMOS12", SLEW => "FAST")
           port map (O => pad, I => i);
       end generate;
     end generate;
@@ -855,7 +878,11 @@ begin
 	    port map (O => o, I => padp, IB => padn);      
     end generate;
   end generate;
-  beh : if ((level /= lvds) and (level /= sstl)) generate
+  xsstl12_dci : if level = sstl12_dci generate
+    ip : IBUFGDS generic map (DIFF_TERM => false, IOSTANDARD => "DIFF_SSTL12_DCI")
+      port map (O => o, I => padp, IB => padn);      
+  end generate;
+  beh : if ((level /= lvds) and (level /= sstl)) and (level /= sstl12_dci) generate
     o <= padp after 1 ns;
   end generate;
 end;
@@ -1047,6 +1074,14 @@ begin
     xsstl18_ii : if level = sstl18_ii generate
         op : OBUFDS generic map(IOSTANDARD  => "DIFF_SSTL18_II")
            port map (O => padp, OB => padn, I => i);
+    end generate;
+    xsstl12_dci : if level = sstl12_dci generate
+      op : OBUFDS generic map(IOSTANDARD  => "DIFF_SSTL12_DCI")
+        port map (O => padp, OB => padn, I => i);
+    end generate;
+    xhstl_i_18 : if level = hstl_i_18 generate
+      op : OBUFDS generic map(IOSTANDARD  => "DIFF_HSTL_I_18")
+        port map (O => padp, OB => padn, I => i);
     end generate;
   end generate;
 

@@ -66,6 +66,8 @@
 #define CONFIG_SYN_TECH smartfusion2
 #elif defined CONFIG_SYN_RTG4
 #define CONFIG_SYN_TECH rtg4
+#elif defined CONFIG_SYN_POLARFIRE
+#define CONFIG_SYN_TECH polarfire
 #elif defined CONFIG_SYN_FUSION
 #define CONFIG_SYN_TECH actfus
 #elif defined CONFIG_SYN_SPARTAN2
@@ -92,6 +94,8 @@
 #define CONFIG_SYN_TECH virtex7
 #elif defined CONFIG_SYN_KINTEX7
 #define CONFIG_SYN_TECH kintex7
+#elif defined CONFIG_SYN_KINTEXU
+#define CONFIG_SYN_TECH kintexu
 #elif defined CONFIG_SYN_ARTIX7
 #define CONFIG_SYN_TECH artix7
 #elif defined CONFIG_SYN_ZYNQ7000
@@ -550,7 +554,11 @@
 #endif
 
 #ifdef CONFIG_MMU_ENABLE
+#ifdef CONFIG_MMU_SV
+#define CONFIG_MMUEN 2
+#else
 #define CONFIG_MMUEN 1
+#endif
 
 #ifdef CONFIG_MMU_SPLIT
 #define CONFIG_TLB_TYPE 0
@@ -662,22 +670,6 @@
 #define CONFIG_DSU_ITRACE_2P 0
 #endif
 
-#if defined CONFIG_DSU_ASTAT
-#define CFG_DSU_AHBPF 2
-#elif defined CONFIG_DSU_AFILT
-#define CFG_DSU_AHBPF 1
-#else
-#define CFG_DSU_AHBPF 0
-#endif
-
-#if defined CONFIG_DSU_AHBWP2
-#define CFG_DSU_AHBWP 2
-#elif defined CONFIG_DSU_AHBWP1
-#define CFG_DSU_AHBWP 1
-#else
-#define CFG_DSU_AHBWP 0
-#endif
-
 #ifndef CONFIG_LEONFT_EN
 #define CONFIG_LEONFT_EN 0
 #endif
@@ -714,11 +706,9 @@
 #if defined CONFIG_CACHE_FT_NONE
 #define CONFIG_CACHE_FT_EN 0
 #elif defined CONFIG_CACHE_FT_BCH
-#define CONFIG_CACHE_FT_EN 16*4 + 2
+#define CONFIG_CACHE_FT_EN 16*4 + 1
 #elif defined CONFIG_CACHE_FT_TECH
-#define CONFIG_CACHE_FT_EN 16*5 + 2
-#else
-#define CONFIG_CACHE_FT_EN 0
+#define CONFIG_CACHE_FT_EN 16*5 + 1
 #endif
 
 #ifndef CONFIG_CACHE_ERRINJ
@@ -753,11 +743,6 @@
 #define CONFIG_STAT_NMAX 0
 #endif
 
-#if defined CONFIG_DSU_ASTAT
-#define CONFIG_STAT_DSUEN 1
-#else
-#define CONFIG_STAT_DSUEN 0
-#endif
 
 #ifndef CONFIG_WRPSR
 #define CONFIG_WRPSR 0
@@ -773,6 +758,18 @@
 
 #ifndef CONFIG_REX
 #define CONFIG_REX 0
+#endif
+
+#ifndef CONFIG_IU_RFINF
+#define CONFIG_IU_RFINF 0
+#endif
+
+#ifndef CONFIG_FPU_RFINF
+#define CONFIG_FPU_RFINF 0
+#endif
+
+#ifndef CONFIG_MMU_INF
+#define CONFIG_MMU_INF 0
 #endif
 
 #ifndef CONFIG_L2_ENABLE
@@ -848,7 +845,13 @@
 #define CONFIG_L2_MTRR 0
 #endif
 
-#ifndef CONFIG_L2_EDAC
+#if defined CONFIG_L2_EDAC_NONE
+#define CONFIG_L2_EDAC 0
+#elif defined CONFIG_L2_EDAC_YES
+#define CONFIG_L2_EDAC 1
+#elif defined CONFIG_L2_EDAC_TECHSPEC
+#define CONFIG_L2_EDAC 2
+#else
 #define CONFIG_L2_EDAC 0
 #endif
 
@@ -1110,6 +1113,11 @@
 #ifndef CONFIG_GRETH_SGMII_MODE
 #define CONFIG_GRETH_SGMII_MODE 0
 #endif
+
+#ifndef CONFIG_GRETH_FMC_MODE
+#define CONFIG_GRETH_FMC_MODE 0
+#endif
+
 #ifndef CONFIG_GRUSBHC_ENABLE
 #define CONFIG_GRUSBHC_ENABLE 0
 #endif
@@ -1502,6 +1510,10 @@
 #define CONFIG_SPW_INPUT 4
 #elif defined CONFIG_SPW_RX_XOR
 #define CONFIG_SPW_INPUT 0
+#elif defined CONFIG_SPW_RX_XORER1
+#define CONFIG_SPW_INPUT 5
+#elif defined CONFIG_SPW_RX_XORER2
+#define CONFIG_SPW_INPUT 6
 #elif defined CONFIG_SPW_RX_AFLEX
 #define CONFIG_SPW_INPUT 1
 #else

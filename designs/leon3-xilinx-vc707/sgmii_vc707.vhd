@@ -2,7 +2,7 @@
 --  This file is a part of the GRLIB VHDL IP LIBRARY
 --  Copyright (C) 2003 - 2008, Gaisler Research
 --  Copyright (C) 2008 - 2014, Aeroflex Gaisler
---  Copyright (C) 2015 - 2017, Cobham Gaisler
+--  Copyright (C) 2015 - 2018, Cobham Gaisler
 --
 --  This program is free software; you can redistribute it and/or modify
 --  it under the terms of the GNU General Public License as published by
@@ -123,6 +123,9 @@ entity sgmii_vc707 is
       gmiio             : in  eth_out_type;
       -- Asynchronous reset for entire core.
       reset             : in std_logic;
+      clkout0o          : out std_logic;
+      clkout1o          : out std_logic;
+      clkout2o          : out std_logic;
       -- APB Status bus
       apb_clk           : in    std_logic;
       apb_rstn          : in    std_logic;
@@ -653,6 +656,10 @@ begin
           O     => rxuserclk
        );
    end generate;
+
+   clkout0o <= userclk;
+   clkout1o <= rxuserclk;
+   clkout2o <= userclk2;
 
    -----------------------------------------------------------------------------
    -- Sync Reset for user clock

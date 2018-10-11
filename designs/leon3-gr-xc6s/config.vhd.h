@@ -79,6 +79,7 @@
   constant CFG_WRPSR    : integer := CONFIG_WRPSR;
   constant CFG_ALTWIN   : integer := CONFIG_ALTWIN;
   constant CFG_REX      : integer := CONFIG_REX;
+  constant CFG_LEON_MEMTECH : integer := (CONFIG_IU_RFINF*2**17 + CONFIG_FPU_RFINF*2**18 + CONFIG_MMU_INF*2**16);
 
 -- AMBA settings
   constant CFG_DEFMST  	  : integer := CONFIG_AHB_DEFMST;
@@ -167,6 +168,7 @@
   constant CFG_GRETH   	    : integer := CONFIG_GRETH_ENABLE;
   constant CFG_GRETH1G	    : integer := CONFIG_GRETH_GIGA;
   constant CFG_ETH_FIFO     : integer := CFG_GRETH_FIFO;
+  constant CFG_GRETH_FMC    : integer := CONFIG_GRETH_FMC_MODE;
 #ifdef CONFIG_GRETH_SGMII_PRESENT
   constant CFG_GRETH_SGMII  : integer := CONFIG_GRETH_SGMII_MODE;
 #endif

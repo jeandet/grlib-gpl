@@ -42,8 +42,11 @@ foreach tool $tools {
 			continue
 		}
 		"snps" {
+			append toolsstring "compile.simv "
+			append toolsstring "synopsys_sim.setup "
 			append toolsstring "compile.dc "
 			append toolsstring "compile.synp "
+			append toolsstring "make.simv "
 			continue
 		}
 		"xlnx" {

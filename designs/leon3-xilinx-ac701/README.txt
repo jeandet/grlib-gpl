@@ -14,7 +14,7 @@ additional information.
 Note #3: The Vivado flow and parts of this design are still
 experimental. Currently the design configuration should be left as-is.
 
-Note #4: You must have Vivado 2017.1 in your path for the make targets to work.
+Note #4: You must have Vivado 2017.3 in your path for the make targets to work.
 
 The XILINX_VIVADO variable must be exported for the mig_7series target
 to work correctly: export XILINX_VIVADO
@@ -51,6 +51,10 @@ Design specifics
 
 * The JTAG DSU interface is enabled and accesible via the JTAG port.
   Start grmon with -xilusb to connect.
+
+* Ethernet FMC Support is enabled via CFG_GRETH_FMC. For more information
+  see http://ethernetfmc.com/. Example FPGA image and configuration with 
+  FMC Ethernet support is supplied in sub-directory 'bitfiles/fmc'
 
 Simulation and synthesis
 ------------------------

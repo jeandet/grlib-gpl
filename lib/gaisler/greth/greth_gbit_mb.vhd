@@ -2,7 +2,7 @@
 --  This file is a part of the GRLIB VHDL IP LIBRARY
 --  Copyright (C) 2003 - 2008, Gaisler Research
 --  Copyright (C) 2008 - 2014, Aeroflex Gaisler
---  Copyright (C) 2015 - 2017, Cobham Gaisler
+--  Copyright (C) 2015 - 2018, Cobham Gaisler
 --
 --  This program is free software; you can redistribute it and/or modify
 --  it under the terms of the GNU General Public License as published by
@@ -91,6 +91,10 @@ entity greth_gbit_mb is
     mdchain_uo     : out greth_mdiochain_up_type;    -- Leave open
     mdchain_di     : out greth_mdiochain_down_type;  -- Leave open
     mdchain_do     : in  greth_mdiochain_up_type     -- Assign to greth_mdiochain_up_last
+    -- Debug Interface
+    ; debug_rx      : out std_logic_vector(63 downto 0);
+    debug_tx        : out std_logic_vector(63 downto 0);
+    debug_gtx       : out std_logic_vector(63 downto 0)
   );
 end entity;
   
@@ -181,6 +185,7 @@ begin
       edclsepahbg    => edclsepahb,
       ramdebug       => ramdebug,
       mdiohold       => mdiohold,
+      rgmiimode      => 0,
       gmiimode       => gmiimode,
       mdiochain      => mdiochain,
       iotest         => iotest
@@ -292,7 +297,11 @@ begin
       mdiochain_i     => mdchain_di.mdio_i,
       mdiochain_locki => mdchain_do.lock,
       mdiochain_o     => mdchain_do.mdio_o,
-      mdiochain_oe    => mdchain_do.mdio_oe
+      mdiochain_oe    => mdchain_do.mdio_oe,
+      -- Debug
+      debug_rx        => debug_rx,
+      debug_tx        => debug_tx,
+      debug_gtx       => debug_gtx
       );
 
   etho.tx_clk <= '0';                   -- driven in rgmii component

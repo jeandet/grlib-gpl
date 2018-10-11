@@ -2,7 +2,7 @@
 --  This file is a part of the GRLIB VHDL IP LIBRARY
 --  Copyright (C) 2003 - 2008, Gaisler Research
 --  Copyright (C) 2008 - 2014, Aeroflex Gaisler
---  Copyright (C) 2015 - 2017, Cobham Gaisler
+--  Copyright (C) 2015 - 2018, Cobham Gaisler
 --
 --  This program is free software; you can redistribute it and/or modify
 --  it under the terms of the GNU General Public License as published by
@@ -70,6 +70,7 @@ entity grethm is
     ramdebug       : integer range 0 to 2  := 0;
     mdiohold       : integer := 1;
     maxsize        : integer := 1500;
+    rgmiimode      : integer range 0 to 1  := 0;
     gmiimode       : integer range 0 to 1  := 0
     );
   port(
@@ -81,6 +82,10 @@ entity grethm is
     apbo           : out apb_slv_out_type;
     ethi           : in  eth_in_type;
     etho           : out eth_out_type
+    -- Debug Interface
+    ; debug_rx      : out std_logic_vector(63 downto 0);
+    debug_tx        : out std_logic_vector(63 downto 0);
+    debug_gtx       : out std_logic_vector(63 downto 0)
   );
 end entity;
   
@@ -134,6 +139,11 @@ begin
         ethi           => ethi,
         etho           => etho
         );
+
+        debug_rx <= (others => '0');
+        debug_tx <= (others => '0');
+        debug_gtx <= (others => '0');
+
   end generate;
 
   m1000 : if giga = 1 generate
@@ -169,6 +179,7 @@ begin
         multicast      => multicast,
         ramdebug       => ramdebug,
         mdiohold       => mdiohold,
+        rgmiimode      => rgmiimode,
         gmiimode       => gmiimode
         ) 
       port map (
@@ -180,6 +191,9 @@ begin
         apbo           => apbo,
         ethi           => ethi,
         etho           => etho
+        , debug_rx    => debug_rx,
+        debug_tx      => debug_tx,
+        debug_gtx     => debug_gtx
         );
   end generate;
 

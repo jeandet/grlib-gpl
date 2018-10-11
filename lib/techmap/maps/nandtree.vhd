@@ -2,7 +2,7 @@
 --  This file is a part of the GRLIB VHDL IP LIBRARY
 --  Copyright (C) 2003 - 2008, Gaisler Research
 --  Copyright (C) 2008 - 2014, Aeroflex Gaisler
---  Copyright (C) 2015 - 2017, Cobham Gaisler
+--  Copyright (C) 2015 - 2018, Cobham Gaisler
 --
 --  This program is free software; you can redistribute it and/or modify
 --  it under the terms of the GNU General Public License as published by
@@ -58,8 +58,8 @@ architecture rtl of nandtree is
 
     a := v; b(0) := '1';
 
-    for i in 0 to v'length-1 loop
-      b(i+1) := a(i) nand b(i);
+    for iter in 0 to v'length-1 loop
+      b(iter+1) := a(iter) nand b(iter);
     end loop;
 
     return b(v'length);

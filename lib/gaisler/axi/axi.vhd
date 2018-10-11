@@ -2,7 +2,7 @@
 --  This file is a part of the GRLIB VHDL IP LIBRARY
 --  Copyright (C) 2003 - 2008, Gaisler Research
 --  Copyright (C) 2008 - 2014, Aeroflex Gaisler
---  Copyright (C) 2015 - 2017, Cobham Gaisler
+--  Copyright (C) 2015 - 2018, Cobham Gaisler
 --
 --  This program is free software; you can redistribute it and/or modify
 --  it under the terms of the GNU General Public License as published by
@@ -168,7 +168,6 @@ package axi is
 
   component ahbm2axi
     generic (
-      memtech       : integer                := 0;
       hindex        : integer                := 0;
       aximid        : integer range 0 to 15  := 0;  --AXI master transaction ID
       wbuffer_num   : integer range 1 to 256 := 8;
@@ -192,7 +191,6 @@ package axi is
 
   component ahbm2axi3 is
     generic (
-      memtech         : integer               := 0;
       aximid          : integer range 0 to 15 := 0;
       wbuffer_num     : integer range 1 to 16 := 8;
       rprefetch_num   : integer range 1 to 16 := 8;
@@ -213,7 +211,6 @@ package axi is
 
   component ahbm2axi4 is
     generic (
-      memtech         : integer                              := 0;
       aximid          : integer range 0 to 15                := 0;
       wbuffer_num     : integer range 1 to axi4_max_n(AXIDW) := 8;
       rprefetch_num   : integer range 1 to axi4_max_n(AXIDW) := 8;
@@ -235,7 +232,6 @@ package axi is
 
   component ahb2axib is
     generic (
-      memtech         : integer                       := 0;
       hindex          : integer                       := 0;
       aximid          : integer range 0 to 15         := 0;  --AXI master transaction ID
       wbuffer_num     : integer range 1 to 256        := 8;
@@ -272,7 +268,6 @@ package axi is
 
   component ahb2axi3b is
     generic (
-      memtech         : integer                       := 0;
       hindex          : integer                       := 0;
       aximid          : integer range 0 to 15         := 0;  --AXI master transaction ID
       wbuffer_num     : integer range 1 to 16         := 8;
@@ -307,7 +302,6 @@ package axi is
 
   component ahb2axi4b is
     generic (
-      memtech         : integer                              := 0;
       hindex          : integer                              := 0;
       aximid          : integer range 0 to 15                := 0;  --AXI master transaction ID
       wbuffer_num     : integer range 1 to axi4_max_n(AXIDW) := 8;

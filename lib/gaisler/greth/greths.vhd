@@ -2,7 +2,7 @@
 --  This file is a part of the GRLIB VHDL IP LIBRARY
 --  Copyright (C) 2003 - 2008, Gaisler Research
 --  Copyright (C) 2008 - 2014, Aeroflex Gaisler
---  Copyright (C) 2015 - 2017, Cobham Gaisler
+--  Copyright (C) 2015 - 2018, Cobham Gaisler
 --
 --  This program is free software; you can redistribute it and/or modify
 --  it under the terms of the GNU General Public License as published by
@@ -77,7 +77,8 @@ entity greths is
     ramdebug       : integer range 0 to 2  := 0;
     mdiohold       : integer := 1;
     maxsize        : integer := 1500;
-    pcs_phyaddr    : integer range 0 to 32 := 0
+    pcs_phyaddr    : integer range 0 to 32 := 0;
+    pcs_impl       : integer := 0
     );
   port(
     rst            : in  std_ulogic;
@@ -190,7 +191,8 @@ begin
       fabtech   => fabtech,
       memtech   => memtech,
       transtech => transtech,
-      phy_addr  => pcs_phyaddr
+      phy_addr  => pcs_phyaddr,
+      impl      => pcs_impl
     )
     port map(
       clk_125       => clk_125,

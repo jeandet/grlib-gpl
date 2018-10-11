@@ -28,7 +28,7 @@ CLEAN=soft-clean
 ifeq ("$(GRLIB_SIMULATOR)","ALDEC")
 VSIMOPT+= +access +w -voptargs="+acc" +notimingchecks
 else
-VSIMOPT+= -novopt +notimingchecks
+VSIMOPT+= -voptargs="+acc" +notimingchecks
 endif
 
 # Simulation scripts
@@ -44,7 +44,7 @@ LIBSKIP = core1553bbc core1553brm core1553brt gr1553 corePCIF \
 	hynix micron
 DIRSKIP = b1553 pci/pcif leon2 leon2ft crypto satcan pci leon3ft ambatest can \
 	usb grusbhc spacewire ascs slink hcan \
-	leon4v0 l2cache pwm gr1553b iommu axi subsys grrm grdmac nand i2c ddr
+	leon4v0 l2cache pwm gr1553b iommu subsys grrm grdmac nand i2c ddr
 FILESKIP = grcan.vhd
 
 include $(GRLIB)/bin/Makefile
