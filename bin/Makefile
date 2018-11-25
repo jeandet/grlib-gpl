@@ -1301,15 +1301,22 @@ vivado: vivado/$(TOP)_vivado.tcl $(VHDLSYNFILES) $(VERILOGSYNFILES)
 vivado-clean:
 	-rm -rf ./vivado *vivado.log vivado*.jou vivado*.backup.log vivado*.str .Xil .cxl.*.version compile_simlib.log compile_simlib.log.bak xmd.ini
 
+vivado-detected-prog := $(shell { command -v xsct || command -v xmd; } 2>/dev/null)
+
+
 vivado-prog-fpga:
+	@echo "connect" > ./xcst.ini
 	@echo "fpga -f ./vivado/$(DESIGN)/$(DESIGN).runs/impl_1/$(TOP).bit" > ./xmd.ini
 	@echo "exit" >> ./xmd.ini
-	xmd
+	cat  ./xmd.ini >>./xcst.ini
+	$(vivado-detected-prog)
 
 vivado-prog-fpga-ref:
+	@echo "connect" > ./xcst.ini
 	@echo "fpga -f ./bitfiles/$(TOP).bit" > ./xmd.ini
 	@echo "exit" >> ./xmd.ini
-	xmd
+	cat  ./xmd.ini >>./xcst.ini
+	$(vivado-detected-prog)
 
 #########   Altera targets   ############
 
